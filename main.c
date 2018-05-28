@@ -17,7 +17,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-const int SIZE = 6;
+const unsigned int SIZE = 6;
 
 // Prototypes
 void getMatrix(int matrix[SIZE][SIZE], int copy[SIZE][SIZE], char message[20]);
@@ -51,7 +51,7 @@ int main() {
 	fgets(message,21,stdin); // 21 = 20 + '\0'
 	
 	printf("Input: %s\n",message); // Note that message has a '\n'
-	printf("Input length: %ld\n\n",strlen(message));
+	printf("Input length: %d\n\n",(int)strlen(message));
 	
     getMatrix(matrix, copy, message);
 	
@@ -132,15 +132,15 @@ void displayMessage(int matrix[SIZE][SIZE], char message[20])
 /*    Show the matrix in console */
 void displayMatrix(int matrix[SIZE][SIZE]){
     //~ printf("\nMatrix:\n",name);
-    for (int i = 0; i < SIZE; i++) {
-        for (int j = 0; j < SIZE; j++){
+    for (unsigned int i = 0; i < SIZE; i++) {
+        for (unsigned int j = 0; j < SIZE; j++){
             printf("%4d ", matrix[i][j]);
         }
         printf("\n");
     }
     printf("\n");
-    for (int i = 0; i < SIZE; i++) {
-        for (int j = 0; j < SIZE; j++){
+    for (unsigned int i = 0; i < SIZE; i++) {
+        for (unsigned int j = 0; j < SIZE; j++){
             printf("%4c ", matrix[i][j]);
         }
         printf("\n");
@@ -161,8 +161,8 @@ void freeMatrix()
 
 void encryptA(int matrix[SIZE][SIZE], int copy[SIZE][SIZE])
 {
-    for (int i = 0; i < SIZE; i++) {
-        for (int j = 0; j < SIZE; j++){
+    for (unsigned int i = 0; i < SIZE; i++) {
+        for (unsigned int j = 0; j < SIZE; j++){
             matrix[i][j] = copy[j][i];
         }
     }
@@ -170,8 +170,8 @@ void encryptA(int matrix[SIZE][SIZE], int copy[SIZE][SIZE])
 
 void dencryptA(int matrix[SIZE][SIZE], int copy[SIZE][SIZE])
 {
-    for (int i = 0; i < SIZE; i++) {
-        for (int j = 0; j < SIZE; j++){
+    for (unsigned int i = 0; i < SIZE; i++) {
+        for (unsigned int j = 0; j < SIZE; j++){
             matrix[i][j] = copy[i][j];
         }
     }
@@ -184,8 +184,8 @@ void dencryptA(int matrix[SIZE][SIZE], int copy[SIZE][SIZE])
  */
 
 void encryptR(int matrix[SIZE][SIZE]){
-	for (int i = 0; i < SIZE; i++) {
-        for (int j = 0; j < SIZE; j++){
+	for (unsigned int i = 0; i < SIZE; i++) {
+        for (unsigned int j = 0; j < SIZE; j++){
             matrix[i][j] = reverseBits((unsigned int)matrix[i][j]);
         }
     }
