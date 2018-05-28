@@ -190,7 +190,7 @@ void encryptR(int matrix[SIZE][SIZE]){
         }
     }
 }
- 
+
 unsigned int reverseBits(unsigned int x)
 {
 	// https://stackoverflow.com/questions/6916974/change-a-bit-of-an-integer
