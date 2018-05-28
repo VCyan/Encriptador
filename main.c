@@ -24,15 +24,18 @@ void getMatrix(int matrix[SIZE][SIZE], int copy[SIZE][SIZE], char message[20]);
 void displayMessage(int arr[SIZE][SIZE], char message[20]);
 void displayMatrix(int arr[SIZE][SIZE]);
 void encryptA(int matrix[SIZE][SIZE], int copy[SIZE][SIZE]);
+void encryptR(int matrix[SIZE][SIZE]);
+
 void dencryptA(int matrix[SIZE][SIZE], int copy[SIZE][SIZE]);
 
+unsigned int reverseBits(unsigned int x);
 //~ void initResultingMatrix(int **);
 //~ void * matrixMultiplication(void *);
 
 
 int main() {
     char message[20];
-    char clave[10] = {'B','R','3','A','L','5','V','I','7','X'};
+    //~ char clave[10] = {'B','R','3','A','L','5','V','I','7','X'};
     int matrix[SIZE][SIZE]; // Multiplo de dos
     int copy[SIZE][SIZE];
     //~ int **ptrmatrix;
@@ -65,6 +68,7 @@ int main() {
 	}
     encryptA(matrix, copy);
     
+    encryptR(matrix);
     // Display encrypted Message
     displayMessage(matrix, message);
     displayMatrix(matrix);
@@ -72,13 +76,15 @@ int main() {
     // Decrypt Message
     
 	for(unsigned int i = 0; i < SIZE; i++){
-		// Decryption A
-		// Decryption B
 		// Decryption C
+		// Decryption B
+		// Decryption A
 		// ...
 	}
 	
+	encryptR(matrix);
 	dencryptA(matrix, copy);
+	
 	
     displayMessage(matrix, message);
     displayMatrix(matrix);
@@ -171,23 +177,42 @@ void dencryptA(int matrix[SIZE][SIZE], int copy[SIZE][SIZE])
     }
 }
 
+/* encryptR
+ * 
+ * La funcion encryptR revierte los bits de de cada valor de la matriz, esto es:
+ * Si se tiene el valor 10, en binario ( 1010 ) revertirá el orden de sus bits por ( 0101 )
+ */
 
+void encryptR(int matrix[SIZE][SIZE]){
+	for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++){
+            matrix[i][j] = reverseBits((unsigned int)matrix[i][j]);
+        }
+    }
+}
+ 
+unsigned int reverseBits(unsigned int x)
+{
+	// https://stackoverflow.com/questions/6916974/change-a-bit-of-an-integer
+	// As the integer value comes from a char (1 byte / 8 bits) and an integer value requires ( 4 bytes / 32 bits )
+	// We multiply the value 
+	// 1111 0000 => 0000 1111 or 1010 => 0101
+    unsigned int NO_OF_BITS = sizeof(x) * 8;
+    unsigned int reverse_num = 0;
+    unsigned int i;
+    for (i = 0; i < NO_OF_BITS; i++)
+    {
+		//~ printf("%u",(x & (1 << i))); 
+		// If x AND 0..1..0 != 0, then...
+		if((x & (1 << i))){
+		//~ printf(" Si entro %u\n",(x & (1 << i)));
+			// number = number OR bit # (( 0..1..0 ) - position i)
+			// Note that bit # 32 is really bit # 31 as position bits start at 0...
+			reverse_num |= 1 << ((NO_OF_BITS - 1) - i);
+		}
+   }
+   // Transverse # of bits 24 positions.
+   reverse_num >>= 24;
+   return reverse_num;
+}
 
-    //~ for (int i = 0; i < SIZE; i++) {
-        //~ for (int j = 0; j < SIZE; j++){
-            //~ matrix[i][j] = matrix[i][j] >> 2;
-        //~ }
-    //~ }
-    
-
-    
-    //~ for (int i = 0; i < SIZE; i++) {
-        //~ for (int j = 0; j < SIZE; j++){
-            //~ matrix[i][j] = matrix[i][j] << 2;
-        //~ }
-    //~ }
-
-    //~ for (int i = index; i < (index + 1); i++) {
-        //~ for (int j = 0; j < SIZE; j++) {
-        //~ }
-    //~ }
