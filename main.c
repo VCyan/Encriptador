@@ -191,8 +191,7 @@ void encryptR(int matrix[SIZE][SIZE]){
 }
 
 /* reverseBits()
- * 1111 0000 => 0000 1111 or 1010 => 0101
- * // https://stackoverflow.com/questions/6916974/change-a-bit-of-an-integer
+ * 1010 => 0101
  * La funcion reverseBits es la función complementaria de encryptR, la cual realiza la operacion de revertir los bits.
  * Se recibe el valor a revertir (unsigned int x).
  * Se devuelve el nuevo numero revertido (unsigned int reverseX)
@@ -208,16 +207,14 @@ unsigned int reverseBits(unsigned int x)
     // 2. Iteramos sobre el valor x hasta SIZEINT (32) posiciones 
     for (i = 0; i < SIZEINT; i++)
     {
-		//~ printf("%u",(x & (1 << i))); 
-		// 3. Comparamos el valor x en la posicion i con el bit 0..1..0 en la posicion i con el operador bit AND (&)
-		// If x AND 0..1..0 != 0, then...
-		if((x & (1 << i))){
-		//~ printf(" Si entro %u\n",(x & (1 << i)));
-			// 4. Si el bit en la posicion i es 1, entonces en el nuevo numero en la posicion [(32 - 1) - i] establecemos el bit como 1
-			// Note that bit # 32 is really bit # 31 as position bits start at 0
-			// reverseX = reverseX OR bit # (( 0..1..0 ) - position i)
-			reverseX |= 1 << ((SIZEINT - 1) - i);
-		}
+	// 3. Comparamos el valor x en la posicion i con el bit 0..1..0 en la posicion i con el operador bit AND (&)
+	// If x AND 0..1..0 != 0, then...
+	if((x & (1 << i))){
+		// 4. Si el bit en la posicion i es 1, entonces en el nuevo numero en la posicion [(32 - 1) - i] establecemos el bit como 1
+		// Note that bit # 32 is really bit # 31 as position bits start at 0
+		// reverseX = reverseX OR bit # (( 0..1..0 ) - position i)
+		reverseX |= 1 << ((SIZEINT - 1) - i);
+	}
    }
    // 4. Transverse # of bits 24 positions.
    reverseX >>= 24; // Should be reverseX >>= (sizeof(x) * 8 - 8); // in case of 64 bits.
