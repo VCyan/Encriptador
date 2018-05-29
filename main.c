@@ -180,7 +180,7 @@ void dencryptA(int matrix[SIZE][SIZE], int copy[SIZE][SIZE])
 /* encryptR
  * 
  * La funcion encryptR revierte los bits de de cada valor de la matriz, esto es:
- * Si se tiene el valor 10, en binario ( 1010 ) revertirá el orden de sus bits por ( 0101 )
+ * Si se tiene el valor 10, en binario ( 1010 ) revertirá el orden de sus bits por ( 0101 ) = 5
  */
 void encryptR(int matrix[SIZE][SIZE]){
 	for (unsigned int i = 0; i < SIZE; i++) {
