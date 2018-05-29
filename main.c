@@ -35,7 +35,7 @@ unsigned int reverseBits(unsigned int x);
 
 int main() {
     char message[20];
-    //~ char clave[10] = {'B','R','3','A','L','5','V','I','7','X'};
+    char clave[10] = {'B','R','3','A','L','5','V','I','7','X'};
     int matrix[SIZE][SIZE]; // Multiplo de dos
     int copy[SIZE][SIZE];
     //~ int **ptrmatrix;
@@ -180,7 +180,7 @@ void dencryptA(int matrix[SIZE][SIZE], int copy[SIZE][SIZE])
 /* encryptR
  * 
  * La funcion encryptR revierte los bits de de cada valor de la matriz, esto es:
- * Si se tiene el valor 10, en binario ( 1010 ) revertir· el orden de sus bits por ( 0101 ) = 5
+ * Si se tiene el valor 10, en binario ( 1010 ) revertir√° el orden de sus bits por ( 0101 ) = 5
  */
 void encryptR(int matrix[SIZE][SIZE]){
 	for (unsigned int i = 0; i < SIZE; i++) {
@@ -193,7 +193,7 @@ void encryptR(int matrix[SIZE][SIZE]){
 /* reverseBits()
  * 1111 0000 => 0000 1111 or 1010 => 0101
  * // https://stackoverflow.com/questions/6916974/change-a-bit-of-an-integer
- * La funcion reverseBits es la funciÛn complementaria de encryptR, la cual realiza la operacion de revertir los bits.
+ * La funcion reverseBits es la funci√≥n complementaria de encryptR, la cual realiza la operacion de revertir los bits.
  * Se recibe el valor a revertir (unsigned int x).
  * Se devuelve el nuevo numero revertido (unsigned int reverseX)
  */
