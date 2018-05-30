@@ -32,6 +32,11 @@ unsigned int reverseBits(unsigned int x);
 //~ void initResultingMatrix(int **);
 //~ void * matrixMultiplication(void *);
 
+// Vigenere
+char* getVigenereKey(char* key, int messageLength, int keyLength);
+char* vigenereEncrypt(char* message, char* key);
+char* vigenereDecrypt(char* message, char* key);
+
 
 int main() {
     char message[20];
@@ -219,5 +224,52 @@ unsigned int reverseBits(unsigned int x)
    // 4. Transverse # of bits 24 positions.
    reverseX >>= 24; // Should be reverseX >>= (sizeof(x) * 8 - 8); // in case of 64 bits.
    return reverseX;
+}
+
+// Vigenere
+
+char* getVigenereKey(char* key, int messageLength, int keyLength) {
+    char* newKey = malloc(messageLength * sizeof(char*));
+    int i, j;
+
+    for(i = 0, j = 0; i < messageLength; ++i, ++j) {
+        if(j == keyLength) {
+            j = 0;
+        }
+        newKey[i] = key[j];
+    }
+
+    newKey[i] = '\0';
+
+    return newKey;
+}
+
+char* vigenereEncrypt(char* message, char* key) {
+
+    int messageLength = strlen(message);
+    char* encryptedMessage = malloc(messageLength * sizeof(char*));
+    char* newKey = getVigenereKey(key, messageLength, strlen(key));
+    int i, j;
+ 
+    for(i = 0; i < messageLength; ++i) {
+        encryptedMessage[i] = ((message[i] + newKey[i]) % 127) + 0;
+    }
+
+    encryptedMessage[i] = '\0';
+    return encryptedMessage;
+}
+
+char* vigenereDecrypt(char* message, char* key) {
+    int messageLength = strlen(message);
+    char* decryptedMessage = malloc(messageLength * sizeof(char*));
+    char* newKey = getVigenereKey(key, messageLength, strlen(key));
+    int i;
+
+    for(i = 0; i < messageLength; ++i) {
+        decryptedMessage[i] = (((message[i] - newKey[i]) + 127) % 127) + 0;
+    }
+    
+    decryptedMessage[i] = '\0';
+    return decryptedMessage;
 }
 
