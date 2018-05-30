@@ -37,7 +37,7 @@ char* vigenereDecrypt(char* message, char* key);
 
 int main() {
     char message[20];
-    char clave[10] = {'B','R','3','A','L','5','V','I','7','X'};
+    char clave[10] = {'B','R','A','L','S','V','I','J','X'};
     int matrix[SIZE][SIZE]; // Multiplo de dos
     int copy[SIZE][SIZE];
     //~ int **ptrmatrix;
