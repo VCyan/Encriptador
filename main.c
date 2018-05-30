@@ -284,3 +284,58 @@ char* vigenereDecrypt(char* message, char* key) {
     decryptedMessage[i] = '\0';
     return decryptedMessage;
 }
+
+void encryptSUM(int matrix[SIZE][SIZE], char clave[10])
+{
+    int pos = 0;
+
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++){
+
+            matrix[i][j] = matrix[i][j] + clave[pos];
+            pos = pos + 1;
+
+            if (pos == 10){
+                pos = 0;
+            }
+
+        }
+    }
+}
+
+void encryptMINUS(int matrix[SIZE][SIZE], char clave[10])
+{
+    int pos = 0;
+
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++){
+
+            matrix[i][j] = matrix[i][j] - clave[pos];
+            pos = pos + 1;
+
+            if (pos == 10){
+                pos = 0;
+            }
+
+        }
+    }
+}
+
+// encrypt and decrypt by XOR
+void encryptXOR(int matrix[SIZE][SIZE], char clave[10])
+{
+    int pos = 0;
+
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++){
+
+            matrix[i][j] = matrix[i][j] ^ clave[pos];
+            pos = pos + 1;
+
+            if (pos == 10){
+                pos = 0;
+            }
+
+        }
+    }
+}
