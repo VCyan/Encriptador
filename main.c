@@ -25,12 +25,9 @@ void displayMessage(int arr[SIZE][SIZE], char message[20]);
 void displayMatrix(int arr[SIZE][SIZE]);
 void encryptA(int matrix[SIZE][SIZE], int copy[SIZE][SIZE]);
 void encryptR(int matrix[SIZE][SIZE]);
+unsigned int reverseBits(unsigned int x);
 
 void dencryptA(int matrix[SIZE][SIZE], int copy[SIZE][SIZE]);
-
-unsigned int reverseBits(unsigned int x);
-//~ void initResultingMatrix(int **);
-//~ void * matrixMultiplication(void *);
 
 // Vigenere
 char* getVigenereKey(char* key, int messageLength, int keyLength);
@@ -44,41 +41,47 @@ int main() {
     int matrix[SIZE][SIZE]; // Multiplo de dos
     int copy[SIZE][SIZE];
     //~ int **ptrmatrix;
-
+    
 	// Set memory variables to 0...
 	memset( message, 0, sizeof(message) );
 	// Set memory matrices to 32 = [space] / ASCII Value.
-	memset( matrix, 32, SIZE*SIZE*sizeof(int) );
-	memset( copy, 32, SIZE*SIZE*sizeof(int) );
-	
+	memset( matrix, 0, SIZE*SIZE*sizeof(int) );
+	memset( copy, 0, SIZE*SIZE*sizeof(int) );
+	//displayMatrix(matrix);
 	printf("Ingresar mensaje a cifrar: ");
-	//~ scanf("%s", message);
 	fgets(message,21,stdin); // 21 = 20 + '\0'
-	
-	printf("Input: %s\n",message); // Note that message has a '\n'
+		size_t ln = strlen(message) - 1;
+		if (*message && message[ln] == '\n'){message[ln] = '\0';}
+    
+	printf("Input: %s\n",message);
 	printf("Input length: %d\n\n",(int)strlen(message));
 	
-    getMatrix(matrix, copy, message);
-	
-	displayMessage(matrix, message);
+	strcpy(message,vigenereEncrypt(message, clave));
+	printf("Vignere = %s\n",message);
+    //printf("Input Vignere: %d\n\n",(int)strlen(message));
+	getMatrix(matrix, copy, message);
 	displayMatrix(matrix);
-    
-	// Encrypt Message - Rondas
+ 
+    //getMatrix(matrix, copy, message);
+	//displayMessage(matrix, message);
+	//displayMatrix(matrix);
+	
+// Encrypt Message - Rondas
 	// Plus = Se podria agregar un switch que segun i = 0, 1, 2, ... se altere el orden de las funciones...
 	for(unsigned int i = 0; i < SIZE; i++){
-		// Encryption A
-		// Encryption B
-		// Encryption C
-		// ...
+
 	}
-    encryptA(matrix, copy);
-    
-    encryptR(matrix);
-    // Display encrypted Message
+	encryptA(matrix, copy);
+	displayMatrix(matrix);
+	encryptR(matrix);
+	displayMatrix(matrix);
+
+// Display encrypted Message
+	//displayMatrix(matrix);
+	printf("************************\n");
     displayMessage(matrix, message);
-    displayMatrix(matrix);
-        
-    // Decrypt Message
+    printf("************************\n");
+// Decrypt Message
     
 	for(unsigned int i = 0; i < SIZE; i++){
 		// Decryption C
@@ -88,12 +91,15 @@ int main() {
 	}
 	
 	encryptR(matrix);
+	displayMatrix(matrix);
 	dencryptA(matrix, copy);
+	displayMatrix(matrix);
 	
-	
-    displayMessage(matrix, message);
-    displayMatrix(matrix);
-
+	displayMessage(matrix, message);
+    //displayMatrix(matrix);
+	strcpy(message,vigenereDecrypt(message, clave));
+    printf("Decrypted = %s\n",message);
+    
     return 0;
 }
 
@@ -104,11 +110,14 @@ void getMatrix(int matrix[SIZE][SIZE], int copy[SIZE][SIZE], char message[20]){
 	int k = 0;
 	for(unsigned int i = 0; i < SIZE; i++){
 		for(unsigned int j=0; j < SIZE; j++){
-			if((int) message[k] < 32 || k > 20){
-				matrix[i][j] = 32;
-				copy[i][j] = 32;
+			if((int) message[k] < 1 || k >= 20)
+			{
+				printf("Roto k = %d",k);
+				break;
+				//copy[i][j] = 32;
 			}
-			else{
+			else
+			{
 				matrix[i][j] = (int) message[k];
 				copy[i][j] = (int) message[k];
 			}
@@ -123,7 +132,8 @@ void displayMessage(int matrix[SIZE][SIZE], char message[20])
 	int k = 0;
 	for(unsigned int i = 0; i < SIZE; i++){
 		for(unsigned int j=0; j < SIZE; j++){
-			message[k] = matrix[i][j];
+			//if((char)matrix[i][j] == '\0')
+			message[k] = (char)matrix[i][j];
 			if(k > 20){
 				i = j = SIZE;
 				break;
@@ -131,22 +141,22 @@ void displayMessage(int matrix[SIZE][SIZE], char message[20])
 			k++;
 		}
 	}
-	printf("Message: %s\n\n",message);
+	printf("Display Message: %s\n\n",message);
 }
 
 /*    Show the matrix in console */
 void displayMatrix(int matrix[SIZE][SIZE]){
-    //~ printf("\nMatrix:\n",name);
+    printf("\nDISPLAY MATRIX:\n");
     for (unsigned int i = 0; i < SIZE; i++) {
         for (unsigned int j = 0; j < SIZE; j++){
-            printf("%4d ", matrix[i][j]);
+            printf("%4d", matrix[i][j]);
         }
         printf("\n");
     }
     printf("\n");
     for (unsigned int i = 0; i < SIZE; i++) {
         for (unsigned int j = 0; j < SIZE; j++){
-            printf("%4c ", matrix[i][j]);
+            printf("%4c", matrix[i][j]);
         }
         printf("\n");
     }
@@ -227,7 +237,9 @@ unsigned int reverseBits(unsigned int x)
 }
 
 // Vigenere
-
+// Por razones actualmente desconocidas en el caso del caracter ) se carcome en mensaje.
+// Probar con este mensaje #$%&/()=?VAMOSvamosx 
+// y con este otro  #$%&/(=?VAMOSvamosx 
 char* getVigenereKey(char* key, int messageLength, int keyLength) {
     char* newKey = malloc(messageLength * sizeof(char*));
     int i, j;
@@ -249,8 +261,8 @@ char* vigenereEncrypt(char* message, char* key) {
     int messageLength = strlen(message);
     char* encryptedMessage = malloc(messageLength * sizeof(char*));
     char* newKey = getVigenereKey(key, messageLength, strlen(key));
-    int i, j;
- 
+    int i;
+    
     for(i = 0; i < messageLength; ++i) {
         encryptedMessage[i] = ((message[i] + newKey[i]) % 127) + 0;
     }
