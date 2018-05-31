@@ -44,7 +44,6 @@ int main() {
     char clave[10] = {'B','R','A','L','S','V','I','J','X'};
     int matrix[SIZE][SIZE]; // Multiplo de dos
     int copy[SIZE][SIZE];
-    //~ int **ptrmatrix;
     
 	// Set memory variables to 0...
 	memset( message, 0, sizeof(message) );
@@ -62,7 +61,6 @@ int main() {
 	
 	strcpy(message,vigenereEncrypt(message, clave));
 	printf("Vignere = %s\n",message);
-    //printf("Input Vignere: %d\n\n",(int)strlen(message));
 	getMatrix(matrix, copy, message);
 	displayMatrix(matrix);
  
