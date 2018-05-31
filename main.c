@@ -5,9 +5,9 @@
  *
  * @authors
  * 
- * 	A00759273 – Alberto
- *	A01611066 – Brandon
- *	A01362306 – Victor Eduardo Martin del Campo
+ * 	A00759273  Alberto
+ *	A01611066  Brandon
+ *	A01362306  Victor Eduardo Martin del Campo
  *
  * @date    26.05.2018 14:58:05
  *
@@ -100,21 +100,29 @@ char* decrypt(char* message) {
 
 
 int main() {
-
     char message[20];
+    char messageEncryted[20];
     // Set memory variables to 0...
 	memset( message, 0, sizeof(message) );
 
-    printf("Ingresar mensaje a cifrar: ");
+    printf("INPUT TEXT: ");
 
     fgets(message,21,stdin); // 21 = 20 + '\0'
 		size_t ln = strlen(message) - 1;
 		if (*message && message[ln] == '\n'){message[ln] = '\0';}
     
-	printf("Input: %s\n",message);
-	printf("Input length: %d\n\n",(int)strlen(message));
+	//printf("Input: %s\n",message);
+	//printf("Input length: %d\n\n",(int)strlen(message));
 
     printf("%s\n", encrypt(message));
+    
+	printf("OUTPUT TEXT: ");
+	fgets(messageEncryted,21,stdin); // 21 = 20 + '\0'
+		ln = strlen(messageEncryted) - 1;
+		if (*messageEncryted && messageEncryted[ln] == '\n'){messageEncryted[ln] = '\0';}
+		
+	//printf("%s\n", decrypt(messageEncryted));
+    printf("%s\n", decrypt(messageEncryted));
     
     return 0;
 }
