@@ -63,7 +63,7 @@ char* encrypt(char* message) {
 	// displayMatrix(matrix);
 	
 	encryptSUM(matrix, clave);
-	// displayMatrix(matrix);
+	displayMatrix(matrix);
 
     return message;
 }
@@ -79,16 +79,16 @@ char* decrypt(char* message) {
 	memset( copy, 0, SIZE*SIZE*sizeof(int) );	
 
     encryptMINUS(matrix, clave);
-	displayMatrix(matrix);
+	// displayMatrix(matrix);
 
 	encryptXOR(matrix, clave);
-	displayMatrix(matrix);
+	// displayMatrix(matrix);
 	
 	encryptR(matrix);
-	displayMatrix(matrix);
+	// displayMatrix(matrix);
 	
 	dencryptA(matrix, copy);
-	displayMatrix(matrix);
+	// displayMatrix(matrix);
 	
 	displayMessage(matrix, message);
     
