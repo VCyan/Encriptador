@@ -51,20 +51,20 @@ char* encrypt(char* message) {
 	strcpy(message,vigenereEncrypt(message, clave));
 
 	getMatrix(matrix, copy, message);
-	// displayMatrix(matrix);
+	displayMatrix(matrix);
  
 	encryptA(matrix, copy);
-	// displayMatrix(matrix);
+	displayMatrix(matrix);
 	
 	encryptR(matrix);
-	// displayMatrix(matrix);
+	displayMatrix(matrix);
 	
 	encryptXOR(matrix, clave);
-	// displayMatrix(matrix);
+	displayMatrix(matrix);
 	
 	encryptSUM(matrix, clave);
-	// displayMatrix(matrix);
-
+	displayMatrix(matrix);
+	
     return message;
 }
 
@@ -76,8 +76,11 @@ char* decrypt(char* message) {
 	
 	// Set memory matrices to 32 = [space] / ASCII Value.
 	memset( matrix, 0, SIZE*SIZE*sizeof(int) );
-	memset( copy, 0, SIZE*SIZE*sizeof(int) );	
-
+	memset( copy, 0, SIZE*SIZE*sizeof(int) );
+	
+	getMatrix(matrix, copy, message);
+	displayMatrix(matrix);
+	
     encryptMINUS(matrix, clave);
 	displayMatrix(matrix);
 
@@ -93,7 +96,7 @@ char* decrypt(char* message) {
 	displayMessage(matrix, message);
     
 	strcpy(message,vigenereDecrypt(message, clave));
-    //printf("Decrypted = %s\n",message);
+    printf("Decrypted = %s\n",message);
     
     return message;
 }
@@ -102,19 +105,28 @@ char* decrypt(char* message) {
 int main() {
 
     char message[20];
+    char messageEncryted[20];
     // Set memory variables to 0...
 	memset( message, 0, sizeof(message) );
 
-    printf("Ingresar mensaje a cifrar: ");
+    printf("INPUT TEXT: ");
 
     fgets(message,21,stdin); // 21 = 20 + '\0'
 		size_t ln = strlen(message) - 1;
 		if (*message && message[ln] == '\n'){message[ln] = '\0';}
     
-	printf("Input: %s\n",message);
-	printf("Input length: %d\n\n",(int)strlen(message));
+	//printf("Input: %s\n",message);
+	//printf("Input length: %d\n\n",(int)strlen(message));
 
     printf("%s\n", encrypt(message));
+    
+	printf("OUTPUT TEXT: ");
+	fgets(messageEncryted,21,stdin); // 21 = 20 + '\0'
+		ln = strlen(messageEncryted) - 1;
+		if (*messageEncryted && messageEncryted[ln] == '\n'){messageEncryted[ln] = '\0';}
+		
+	//printf("%s\n", decrypt(messageEncryted));
+    printf("%s\n", decrypt(messageEncryted));
     
     return 0;
 }
