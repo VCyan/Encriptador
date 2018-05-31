@@ -5,9 +5,9 @@
  *
  * @authors
  * 
- * 	A00759273 � Alberto
- *	A01611066 � Brandon
- *	A01362306 � V�ctor Eduardo Martin del Campo
+ * 	A00759273 – Alberto
+ *	A01611066 – Brandon
+ *	A01362306 – Victor Eduardo Martin del Campo
  *
  * @date    26.05.2018 14:58:05
  *
@@ -43,12 +43,13 @@ char* encrypt(char* message) {
     char clave[10] = {'B','R','A','L','S','V','I','J','X'};
     int matrix[SIZE][SIZE]; // Multiplo de dos
     int copy[SIZE][SIZE];
-	
+
 	// Set memory matrices to 32 = [space] / ASCII Value.
 	memset( matrix, 0, SIZE*SIZE*sizeof(int) );
 	memset( copy, 0, SIZE*SIZE*sizeof(int) );	
 
 	strcpy(message,vigenereEncrypt(message, clave));
+
 	getMatrix(matrix, copy, message);
 	// displayMatrix(matrix);
  
@@ -79,7 +80,7 @@ char* decrypt(char* message) {
 
     encryptMINUS(matrix, clave);
 	displayMatrix(matrix);
-	
+
 	encryptXOR(matrix, clave);
 	displayMatrix(matrix);
 	
@@ -208,7 +209,7 @@ void dencryptA(int matrix[SIZE][SIZE], int copy[SIZE][SIZE])
 /* encryptR
  * 
  * La funcion encryptR revierte los bits de de cada valor de la matriz, esto es:
- * Si se tiene el valor 10, en binario ( 1010 ) revertirá el orden de sus bits por ( 0101 ) = 5
+ * Si se tiene el valor 10, en binario ( 1010 ) revertirÃ¡ el orden de sus bits por ( 0101 ) = 5
  */
 void encryptR(int matrix[SIZE][SIZE]){
 	for (unsigned int i = 0; i < SIZE; i++) {
@@ -220,7 +221,7 @@ void encryptR(int matrix[SIZE][SIZE]){
 
 /* reverseBits()
  * 1010 => 0101
- * La funcion reverseBits es la función complementaria de encryptR, la cual realiza la operacion de revertir los bits.
+ * La funcion reverseBits es la funciÃ³n complementaria de encryptR, la cual realiza la operacion de revertir los bits.
  * Se recibe el valor a revertir (unsigned int x).
  * Se devuelve el nuevo numero revertido (unsigned int reverseX)
  */
