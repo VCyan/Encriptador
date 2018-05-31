@@ -18,7 +18,9 @@
 #include <string.h>
 #include <ctype.h>
 #include <wchar.h>
+#include <iostream>
 
+using namespace std;
 
 const unsigned int SIZE = 6;
 
@@ -178,6 +180,7 @@ void displayMessage(int matrix[SIZE][SIZE], char message[20])
 		}
 	}
 	printf("D Message: %ls\n\n",messageUnicode);
+	wcout << "UNICODE: " << messageUnicode << endl;
 }
 
 /*    Show the matrix in console */
