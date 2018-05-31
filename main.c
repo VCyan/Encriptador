@@ -65,6 +65,8 @@ char* encrypt(char* message) {
 	encryptSUM(matrix, clave);
 	displayMatrix(matrix);
 	
+	displayMessage(matrix, message);
+	
     return message;
 }
 
