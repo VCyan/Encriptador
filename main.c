@@ -5,9 +5,9 @@
  *
  * @authors
  * 
- * 	A00759273 � Alberto
- *	A01611066 � Brandon
- *	A01362306 � V�ctor Eduardo Martin del Campo
+ * 	A00759273 – Alberto
+ *	A01611066 – Brandon
+ *	A01362306 – Victor Eduardo Martin del Campo
  *
  * @date    26.05.2018 14:58:05
  *
@@ -16,6 +16,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 const unsigned int SIZE = 6;
 
@@ -38,69 +39,48 @@ char* getVigenereKey(char* key, int messageLength, int keyLength);
 char* vigenereEncrypt(char* message, char* key);
 char* vigenereDecrypt(char* message, char* key);
 
-
-int main() {
-    char message[20];
+char* encrypt(char* message) {
     char clave[10] = {'B','R','A','L','S','V','I','J','X'};
     int matrix[SIZE][SIZE]; // Multiplo de dos
     int copy[SIZE][SIZE];
-    
-	// Set memory variables to 0...
-	memset( message, 0, sizeof(message) );
+
 	// Set memory matrices to 32 = [space] / ASCII Value.
 	memset( matrix, 0, SIZE*SIZE*sizeof(int) );
-	memset( copy, 0, SIZE*SIZE*sizeof(int) );
-	//displayMatrix(matrix);
-	printf("Ingresar mensaje a cifrar: ");
-	fgets(message,21,stdin); // 21 = 20 + '\0'
-		size_t ln = strlen(message) - 1;
-		if (*message && message[ln] == '\n'){message[ln] = '\0';}
-    
-	printf("Input: %s\n",message);
-	printf("Input length: %d\n\n",(int)strlen(message));
-	
-	strcpy(message,vigenereEncrypt(message, clave));
-	printf("Vignere = %s\n",message);
-	getMatrix(matrix, copy, message);
-	displayMatrix(matrix);
- 
-    //getMatrix(matrix, copy, message);
-	//displayMessage(matrix, message);
-	//displayMatrix(matrix);
-	
-// Encrypt Message - Rondas
-	// Plus = Se podria agregar un switch que segun i = 0, 1, 2, ... se altere el orden de las funciones...
-	for(unsigned int i = 0; i < SIZE; i++){
+	memset( copy, 0, SIZE*SIZE*sizeof(int) );	
 
-	}
+	strcpy(message,vigenereEncrypt(message, clave));
+
+	getMatrix(matrix, copy, message);
+	// displayMatrix(matrix);
+ 
 	encryptA(matrix, copy);
-	displayMatrix(matrix);
+	// displayMatrix(matrix);
 	
 	encryptR(matrix);
-	displayMatrix(matrix);
+	// displayMatrix(matrix);
 	
 	encryptXOR(matrix, clave);
-	displayMatrix(matrix);
+	// displayMatrix(matrix);
 	
 	encryptSUM(matrix, clave);
-	displayMatrix(matrix);
-	
-// Display encrypted Message
-	printf("************************\n");
-    displayMessage(matrix, message);
-    printf("************************\n");
-////////////////////////////
+	// displayMatrix(matrix);
 
-// Decrypt Message    
-	for(unsigned int i = 0; i < SIZE; i++){
-		// Decryption C
-		// Decryption B
-		// Decryption A
-		// ...
-	}
-	encryptMINUS(matrix, clave);
-	displayMatrix(matrix);
+    return message;
+}
+
+char* decrypt(char* message) {
+
+    char clave[10] = {'B','R','A','L','S','V','I','J','X'};
+    int matrix[SIZE][SIZE]; // Multiplo de dos
+    int copy[SIZE][SIZE];
 	
+	// Set memory matrices to 32 = [space] / ASCII Value.
+	memset( matrix, 0, SIZE*SIZE*sizeof(int) );
+	memset( copy, 0, SIZE*SIZE*sizeof(int) );	
+
+    encryptMINUS(matrix, clave);
+	displayMatrix(matrix);
+
 	encryptXOR(matrix, clave);
 	displayMatrix(matrix);
 	
@@ -111,9 +91,28 @@ int main() {
 	displayMatrix(matrix);
 	
 	displayMessage(matrix, message);
-    //displayMatrix(matrix);
+    
 	strcpy(message,vigenereDecrypt(message, clave));
     printf("Decrypted = %s\n",message);
+}
+
+
+int main() {
+
+    char message[20];
+    // Set memory variables to 0...
+	memset( message, 0, sizeof(message) );
+
+    printf("Ingresar mensaje a cifrar: ");
+
+    fgets(message,21,stdin); // 21 = 20 + '\0'
+		size_t ln = strlen(message) - 1;
+		if (*message && message[ln] == '\n'){message[ln] = '\0';}
+    
+	printf("Input: %s\n",message);
+	printf("Input length: %d\n\n",(int)strlen(message));
+
+    printf("%s\n", encrypt(message));
     
     return 0;
 }
@@ -210,7 +209,7 @@ void dencryptA(int matrix[SIZE][SIZE], int copy[SIZE][SIZE])
 /* encryptR
  * 
  * La funcion encryptR revierte los bits de de cada valor de la matriz, esto es:
- * Si se tiene el valor 10, en binario ( 1010 ) revertirá el orden de sus bits por ( 0101 ) = 5
+ * Si se tiene el valor 10, en binario ( 1010 ) revertirÃ¡ el orden de sus bits por ( 0101 ) = 5
  */
 void encryptR(int matrix[SIZE][SIZE]){
 	for (unsigned int i = 0; i < SIZE; i++) {
@@ -222,7 +221,7 @@ void encryptR(int matrix[SIZE][SIZE]){
 
 /* reverseBits()
  * 1010 => 0101
- * La funcion reverseBits es la función complementaria de encryptR, la cual realiza la operacion de revertir los bits.
+ * La funcion reverseBits es la funciÃ³n complementaria de encryptR, la cual realiza la operacion de revertir los bits.
  * Se recibe el valor a revertir (unsigned int x).
  * Se devuelve el nuevo numero revertido (unsigned int reverseX)
  */
@@ -279,7 +278,12 @@ char* vigenereEncrypt(char* message, char* key) {
     int i;
     
     for(i = 0; i < messageLength; ++i) {
-        encryptedMessage[i] = ((message[i] + newKey[i]) % 127) + 0;
+        message[i] = toupper(message[i]);
+        if(message[i] > 64 && message[i] < 91) {
+            encryptedMessage[i] = ((message[i] + newKey[i]) % 26) + 'A';
+        } else {
+            encryptedMessage[i] = message[i];
+        }
     }
 
     encryptedMessage[i] = '\0';
@@ -293,7 +297,11 @@ char* vigenereDecrypt(char* message, char* key) {
     int i;
 
     for(i = 0; i < messageLength; ++i) {
-        decryptedMessage[i] = (((message[i] - newKey[i]) + 127) % 127) + 0;
+        if(message[i] > 64 && message[i] < 91) {
+            decryptedMessage[i] = (((message[i] - newKey[i]) + 26) % 26) + 'A';
+        } else {
+            decryptedMessage[i] = message[i];
+        }
     }
     
     decryptedMessage[i] = '\0';
