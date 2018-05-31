@@ -5,9 +5,9 @@
  *
  * @authors
  * 
- *     Alberto
- *	   Brandon
- *     Victor
+ * 	A00759273 – Alberto
+ *	A01611066 – Brandon
+ *	A01362306 – Víctor Eduardo Martin del Campo
  *
  * @date    26.05.2018 14:58:05
  *
@@ -23,9 +23,13 @@ const unsigned int SIZE = 6;
 void getMatrix(int matrix[SIZE][SIZE], int copy[SIZE][SIZE], char message[20]);
 void displayMessage(int arr[SIZE][SIZE], char message[20]);
 void displayMatrix(int arr[SIZE][SIZE]);
+
 void encryptA(int matrix[SIZE][SIZE], int copy[SIZE][SIZE]);
 void encryptR(int matrix[SIZE][SIZE]);
 unsigned int reverseBits(unsigned int x);
+void encryptXOR(int matrix[SIZE][SIZE], char clave[10]);
+void encryptSUM(int matrix[SIZE][SIZE], char clave[10]);
+void encryptMINUS(int matrix[SIZE][SIZE], char clave[10]);
 
 void dencryptA(int matrix[SIZE][SIZE], int copy[SIZE][SIZE]);
 
@@ -73,25 +77,38 @@ int main() {
 	}
 	encryptA(matrix, copy);
 	displayMatrix(matrix);
+	
 	encryptR(matrix);
 	displayMatrix(matrix);
-
+	
+	encryptXOR(matrix, clave);
+	displayMatrix(matrix);
+	
+	encryptSUM(matrix, clave);
+	displayMatrix(matrix);
+	
 // Display encrypted Message
-	//displayMatrix(matrix);
 	printf("************************\n");
     displayMessage(matrix, message);
     printf("************************\n");
-// Decrypt Message
-    
+////////////////////////////
+
+// Decrypt Message    
 	for(unsigned int i = 0; i < SIZE; i++){
 		// Decryption C
 		// Decryption B
 		// Decryption A
 		// ...
 	}
+	encryptMINUS(matrix, clave);
+	displayMatrix(matrix);
+	
+	encryptXOR(matrix, clave);
+	displayMatrix(matrix);
 	
 	encryptR(matrix);
 	displayMatrix(matrix);
+	
 	dencryptA(matrix, copy);
 	displayMatrix(matrix);
 	
@@ -289,8 +306,8 @@ void encryptSUM(int matrix[SIZE][SIZE], char clave[10])
 {
     int pos = 0;
 
-    for (int i = 0; i < SIZE; i++) {
-        for (int j = 0; j < SIZE; j++){
+    for (unsigned int i = 0; i < SIZE; i++) {
+        for (unsigned int j = 0; j < SIZE; j++){
 
             matrix[i][j] = matrix[i][j] + clave[pos];
             pos = pos + 1;
@@ -307,8 +324,8 @@ void encryptMINUS(int matrix[SIZE][SIZE], char clave[10])
 {
     int pos = 0;
 
-    for (int i = 0; i < SIZE; i++) {
-        for (int j = 0; j < SIZE; j++){
+    for (unsigned int i = 0; i < SIZE; i++) {
+        for (unsigned int j = 0; j < SIZE; j++){
 
             matrix[i][j] = matrix[i][j] - clave[pos];
             pos = pos + 1;
@@ -326,8 +343,8 @@ void encryptXOR(int matrix[SIZE][SIZE], char clave[10])
 {
     int pos = 0;
 
-    for (int i = 0; i < SIZE; i++) {
-        for (int j = 0; j < SIZE; j++){
+    for (unsigned int i = 0; i < SIZE; i++) {
+        for (unsigned int j = 0; j < SIZE; j++){
 
             matrix[i][j] = matrix[i][j] ^ clave[pos];
             pos = pos + 1;
