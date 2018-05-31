@@ -5,9 +5,9 @@
  *
  * @authors
  * 
- * 	A00759273 – Alberto
- *	A01611066 – Brandon
- *	A01362306 – Victor Eduardo Martin del Campo
+ * 	A00759273 Alberto
+ *	A01611066 Brandon
+ *	A01362306 Victor Eduardo Martin del Campo
  *
  * @date    26.05.2018 14:58:05
  *
