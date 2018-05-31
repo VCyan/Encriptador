@@ -93,7 +93,9 @@ char* decrypt(char* message) {
 	displayMessage(matrix, message);
     
 	strcpy(message,vigenereDecrypt(message, clave));
-    printf("Decrypted = %s\n",message);
+    //printf("Decrypted = %s\n",message);
+    
+    return message;
 }
 
 
@@ -126,7 +128,7 @@ void getMatrix(int matrix[SIZE][SIZE], int copy[SIZE][SIZE], char message[20]){
 		for(unsigned int j=0; j < SIZE; j++){
 			if((int) message[k] < 1 || k >= 20)
 			{
-				printf("Roto k = %d",k);
+				//printf("Roto k = %d",k);
 				break;
 				//copy[i][j] = 32;
 			}
