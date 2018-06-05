@@ -95,6 +95,7 @@ char* decrypt(char* message) {
 	strcpy(message,vigenereDecrypt(message, clave));
     //printf("Decrypted = %s\n",message);
     
+    
     return message;
 }
 
@@ -156,6 +157,12 @@ void displayMessage(int matrix[SIZE][SIZE], char message[20])
 	int k = 0;
 	for(unsigned int i = 0; i < SIZE; i++){
 		for(unsigned int j=0; j < SIZE; j++){
+			if(matrix[i][j] - 32 <= 32){
+				matrix[i][j] = matrix[i][j] + 33;
+			}
+			else if(matrix[i][j] / 8 > 32)
+			{
+			}
 			//if((char)matrix[i][j] == '\0')
 			message[k] = (char)matrix[i][j];
 			if(k > 20){
