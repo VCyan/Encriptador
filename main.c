@@ -18,13 +18,17 @@
 #include <string.h>
 #include <ctype.h>
 
-const unsigned int SIZE = 6;
+const unsigned int SIZE = 5;
 
 // Prototypes
 void getMatrix(int matrix[SIZE][SIZE], int copy[SIZE][SIZE], char message[20]);
-void displayMessage(int arr[SIZE][SIZE], char message[20]);
-void displayMatrix(int arr[SIZE][SIZE]);
+void getMatrix2(int matrix[SIZE][SIZE], int copy[SIZE][SIZE], char message[20]);
+char* displayMessage(int arr[SIZE][SIZE], char message[20]);
+char* dM(int arr[SIZE][SIZE], char* message);
+void displayMatrix(int arr[SIZE][SIZE], char code[4]);
 
+void createCopy(int matrix[SIZE][SIZE], int copy[SIZE][SIZE]);
+	
 void encryptA(int matrix[SIZE][SIZE], int copy[SIZE][SIZE]);
 void encryptR(int matrix[SIZE][SIZE]);
 unsigned int reverseBits(unsigned int x);
@@ -51,24 +55,26 @@ char* encrypt(char* message) {
 	strcpy(message,vigenereEncrypt(message, clave));
 
 	getMatrix(matrix, copy, message);
-	// displayMatrix(matrix);
+	displayMatrix(matrix, "GETM");
  
 	encryptA(matrix, copy);
-	// displayMatrix(matrix);
+	displayMatrix(matrix, "TRAS");
 	
 	encryptR(matrix);
-	// displayMatrix(matrix);
+	displayMatrix(matrix,"REVE");
 	
 	encryptXOR(matrix, clave);
-	// displayMatrix(matrix);
-	
-	encryptSUM(matrix, clave);
-	displayMatrix(matrix);
+	displayMatrix(matrix,"XOR");
+
+	//encryptSUM(matrix, clave);
+	//displayMatrix(matrix);
+
+	displayMessage(matrix, message);
 
     return message;
 }
 
-char* decrypt(char* message) {
+char* decrypt(char* message){
 
     char clave[10] = {'B','R','A','L','S','V','I','J','X'};
     int matrix[SIZE][SIZE]; // Multiplo de dos
@@ -76,25 +82,33 @@ char* decrypt(char* message) {
 	
 	// Set memory matrices to 32 = [space] / ASCII Value.
 	memset( matrix, 0, SIZE*SIZE*sizeof(int) );
-	memset( copy, 0, SIZE*SIZE*sizeof(int) );	
+	memset( copy, 0, SIZE*SIZE*sizeof(int) );
 
-    encryptMINUS(matrix, clave);
-	// displayMatrix(matrix);
-
+    //encryptMINUS(matrix, clave);
+	//displayMatrix(matrix);
+	
+	getMatrix2(matrix, copy, message);
+	//displayMatrix(matrix);
+	
+	dM(matrix, message);
+	displayMatrix(matrix, "MESS");
+	
 	encryptXOR(matrix, clave);
-	// displayMatrix(matrix);
+	displayMatrix(matrix,"XOR");
 	
 	encryptR(matrix);
-	// displayMatrix(matrix);
+	displayMatrix(matrix,"REVE");
 	
-	dencryptA(matrix, copy);
-	// displayMatrix(matrix);
+	//getMatrix2(matrix, copy, message);
+	//getMatrix(matrix, copy, "TRAS0");
+	memset( copy, 0, SIZE*SIZE*sizeof(int) );
+	createCopy(matrix, copy);
+	encryptA(matrix, copy);
+	displayMatrix(matrix,"TRAS");
 	
-	displayMessage(matrix, message);
-    
+	//displayMessage(matrix, message);
 	strcpy(message,vigenereDecrypt(message, clave));
     //printf("Decrypted = %s\n",message);
-    
     
     return message;
 }
@@ -102,13 +116,13 @@ char* decrypt(char* message) {
 
 int main() {
     char message[20];
-    char messageEncryted[20];
+    char messageEncryted[36];
     // Set memory variables to 0...
 	memset( message, 0, sizeof(message) );
 
     printf("INPUT TEXT: ");
 
-    fgets(message,21,stdin); // 21 = 20 + '\0'
+    fgets(message,36,stdin); // 21 = 20 + '\0'
 		size_t ln = strlen(message) - 1;
 		if (*message && message[ln] == '\n'){message[ln] = '\0';}
     
@@ -118,7 +132,7 @@ int main() {
     printf("%s\n", encrypt(message));
     
 	printf("OUTPUT TEXT: ");
-	fgets(messageEncryted,21,stdin); // 21 = 20 + '\0'
+	fgets(messageEncryted,36,stdin); // 21 = 20 + '\0'
 		ln = strlen(messageEncryted) - 1;
 		if (*messageEncryted && messageEncryted[ln] == '\n'){messageEncryted[ln] = '\0';}
 		
@@ -150,18 +164,39 @@ void getMatrix(int matrix[SIZE][SIZE], int copy[SIZE][SIZE], char message[20]){
 		}
 	}
 }
-
+void getMatrix2(int matrix[SIZE][SIZE], int copy[SIZE][SIZE], char message[36]){
+    // Assign ASCII message to a Matrix
+    // NOTE: 32 is the ASCII code for [space]
+	int k = 0;
+	for(unsigned int i = 0; i < SIZE; i++){
+		for(unsigned int j=0; j < SIZE; j++){
+		{
+			matrix[i][j] = (int) message[k];
+			copy[i][j] = (int) message[k];
+			//if(k > 20){
+			//	i = j = SIZE;
+			//	break;
+			//}
+		}
+		k++;
+		}
+	}
+}
+void createCopy(int matrix[SIZE][SIZE], int copy[SIZE][SIZE]){
+	for(unsigned int i = 0; i < SIZE; i++){
+		for(unsigned int j=0; j < SIZE; j++){
+			copy[i][j] = matrix[i][j];
+		}
+	}
+}
 /*    Show the message in console */
-void displayMessage(int matrix[SIZE][SIZE], char message[20])
+char* displayMessage(int matrix[SIZE][SIZE], char message[20])
 {
 	int k = 0;
 	for(unsigned int i = 0; i < SIZE; i++){
 		for(unsigned int j=0; j < SIZE; j++){
-			if(matrix[i][j] - 32 <= 32){
-				matrix[i][j] = matrix[i][j] + 33;
-			}
-			else if(matrix[i][j] / 8 > 32)
-			{
+			if(matrix[i][j] == 0){
+				matrix[i][j] = 33;
 			}
 			//if((char)matrix[i][j] == '\0')
 			message[k] = (char)matrix[i][j];
@@ -172,12 +207,33 @@ void displayMessage(int matrix[SIZE][SIZE], char message[20])
 			k++;
 		}
 	}
-	printf("Display Message: %s\n\n",message);
+	printf("Display Message 1: %s\n\n",message);
+	return message;
+}
+
+char* dM(int matrix[SIZE][SIZE], char message[36])
+{
+	int k = 0;
+	for(unsigned int i = 0; i < SIZE; i++){
+		for(unsigned int j=0; j < SIZE; j++){
+			if(matrix[i][j] == 33){
+				matrix[i][j] = 0;
+			}
+			if(matrix[i][j] < 0){
+				matrix[i][j] = 256 + matrix[i][j];
+			}
+			//if((char)matrix[i][j] == '\0')
+			message[k] = (char)matrix[i][j];
+			k++;
+		}
+	}
+	printf("Display Message 2: %s\n\n",message);
+	return message;
 }
 
 /*    Show the matrix in console */
-void displayMatrix(int matrix[SIZE][SIZE]){
-    printf("\nDISPLAY MATRIX:\n");
+void displayMatrix(int matrix[SIZE][SIZE], char code[3]){
+    printf("\nDISPLAY MATRIX: %s\n", code);
     for (unsigned int i = 0; i < SIZE; i++) {
         for (unsigned int j = 0; j < SIZE; j++){
             printf("%4d", matrix[i][j]);
@@ -315,7 +371,7 @@ char* vigenereDecrypt(char* message, char* key) {
 
     for(i = 0; i < messageLength; ++i) {
         if(message[i] > 64 && message[i] < 91) {
-            decryptedMessage[i] = (((message[i] - newKey[i]) + 26) % 26) + 'A';
+            decryptedMessage[i] = ((message[i] - newKey[i]) % 26) + 'A';
         } else {
             decryptedMessage[i] = message[i];
         }
